@@ -1,18 +1,29 @@
-# streamlit_app/inputs.py
 import streamlit as st
 import pandas as pd
 
 def get_user_input():
-    area = st.slider("📐 Area (sq. ft)", 300, 5000, 1000)
-    bhk = st.selectbox("🛏️ BHK", [1, 2, 3, 4, 5])
-    location = st.selectbox("📍 Location", ["Mumbai", "Delhi", "Bangalore"])
+    st.sidebar.header("Enter House Details")
 
-    input_dict = {
-        "area": area,
-        "bhk": bhk,
-        "location_Bangalore": 1 if location == "Bangalore" else 0,
-        "location_Delhi": 1 if location == "Delhi" else 0,
-        "location_Mumbai": 1 if location == "Mumbai" else 0
+    area = st.sidebar.slider("Area (in sq. ft)", 500, 5000, 1500)
+    bhk = st.sidebar.selectbox("BHK", [1, 2, 3, 4, 5])
+    location = st.sidebar.selectbox("Location", [
+        'Delhi', 'Mumbai', 'Bangalore', 'Hyderabad', 'Chennai', 
+        'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Lucknow'
+    ])
+
+    # One-hot encode location
+    loc_dict = {
+        'Delhi': 0, 'Mumbai': 0, 'Bangalore': 0, 'Hyderabad': 0,
+        'Chennai': 0, 'Kolkata': 0, 'Pune': 0, 'Ahmedabad': 0,
+        'Jaipur': 0, 'Lucknow': 0
+    }
+    loc_dict[location] = 1
+
+    input_data = {
+        'area': [area],
+        'bhk': [bhk],
+        **{f'loc_{k}': [v] for k, v in loc_dict.items()}
     }
 
-    return pd.DataFrame([input_dict])
+    return pd.DataFrame(input_data)
+
