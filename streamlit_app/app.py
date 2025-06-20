@@ -6,7 +6,8 @@ from visuals import show_graphs
 from inputs import get_user_input
 
 # Load model
-model = pickle.load(open("../model/house_price_model.pkl", "rb"))
+model = pickle.load(open("house_price_model.pkl", "rb"))
+
 
 # Load housing data for visualizations
 df = pd.read_csv("../data/housing_data.csv")
